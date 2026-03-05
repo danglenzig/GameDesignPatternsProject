@@ -29,9 +29,6 @@
     <ClInclude Include="Singletons\RenderSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Singletons\EnemySpawner.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="EventSystem\Event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -48,6 +45,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Animation\PlayerAnimator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Enemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\EnemyFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\Structs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Singletons\PlayerStatus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -143,12 +143,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation\PlayerAnimator.h" />
+    <ClInclude Include="Data\Structs.h" />
     <ClInclude Include="EventSystem\Event.h" />
     <ClInclude Include="EventSystem\GameEvents.h" />
+    <ClInclude Include="GameObjects\Enemy.h" />
+    <ClInclude Include="GameObjects\EnemyFactory.h" />
     <ClInclude Include="GameObjects\GameObject.h" />
     <ClInclude Include="GameObjects\Player.h" />
-    <ClInclude Include="Singletons\EnemySpawner.h" />
     <ClInclude Include="Singletons\InputHandler.h" />
+    <ClInclude Include="Singletons\PlayerStatus.h" />
     <ClInclude Include="Singletons\RenderSystem.h" />
     <ClInclude Include="StateMachine\StateMachine.h" />
     <ClInclude Include="Tester.h" />

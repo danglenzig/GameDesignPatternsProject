@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "../Singletons/InputHandler.h"
 #include "../StateMachine/StateMachine.h"
+#include "../Singletons/PlayerStatus.h"
 #include "raylib.h"
 #include <vector>
 #include <unordered_map>
@@ -70,6 +71,7 @@ public:
 
 void Player::OnFrameUpdate(const float& dT) 
 {
+	PlayerStatus::Instance().SetPlayerPosition(position);
 	animator.OnUpdate(dT);
 
 	Vector2 moveInput = InputHandler::Instance().GetMoveInput();
@@ -147,6 +149,7 @@ void Player::ConfigureFSM()
 		}
 	);
 	OnStateEntered(IDLE);
+	PlayerStatus::Instance().SetPlayerState(playerFSM.currentStateName);
 }
 
 void Player::OnAttackInput()
@@ -185,6 +188,7 @@ void Player::OnStateEntered(const std::string& stateName)
 		// invoke GameEvents::Instance().OnPlayerSlap with damage area
 		break;
 	}
+	PlayerStatus::Instance().SetPlayerState(playerFSM.currentStateName);
 }
 
 void Player::Initialize()

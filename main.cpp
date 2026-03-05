@@ -7,10 +7,12 @@
 #include "Singletons/RenderSystem.h"
 #include "Singletons/EnemySpawner.h"
 #include "Singletons/UpdateRelay.h"
+#include "Singletons/PlayerStatus.h"
 #include "EventSystem/Event.h"
 #include "EventSystem/GameEvents.h"
 #include "GameObjects/GameObject.h"
 #include "GameObjects/Player.h"
+#include "GameObjects/EnemyFactory.h"
 
 int main()
 {
@@ -23,10 +25,12 @@ int main()
 	// Get singleton references
 	InputHandler& inputHandler	= InputHandler::Instance();
 	RenderSystem& renderSystem	= RenderSystem::Instance();
-	EnemySpawner& enemySpawner	= EnemySpawner::Instance(); // this needs a ref to the player and the renderSystem
+	//EnemySpawner& enemySpawner	= EnemySpawner::Instance(); // this needs a ref to the player and the renderSystem
 	GameEvents& gameEvents		= GameEvents::Instance();
+	PlayerStatus& playerStatus = PlayerStatus::Instance();
 	
 	Player player({ 640, 360 }, 1000);
+	EnemyFactory enemyFactory;
 
 
 	// game loop
@@ -44,6 +48,7 @@ int main()
 		renderSystem.RenderGameObject(&player);
 		// 
 		// tell the enemy system to render the enemies
+		enemyFactory.RenderEnemies();
 
 		EndDrawing();
 	}
