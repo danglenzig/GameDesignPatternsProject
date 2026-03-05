@@ -70,7 +70,7 @@ public:
 
 void Player::OnFrameUpdate(const float& dT) 
 {
-	//animator.OnUpdate(dT);
+	animator.OnUpdate(dT);
 
 	Vector2 moveInput = InputHandler::Instance().GetMoveInput();
 	//std::cout << "( " << moveInput.x << ", " << moveInput.y << " )\n";
@@ -125,7 +125,7 @@ void Player::FixDrawData()
 	}
 	
 	// fix after animator is ready
-	drawData.ptrToTexture = nullptr;
+	drawData.ptrToTexture = animator.GetPtrToCurrentTexture();
 }
 
 void Player::ConfigureFSM()
@@ -146,6 +146,7 @@ void Player::ConfigureFSM()
 			OnStateEvent(event);
 		}
 	);
+	OnStateEntered(IDLE);
 }
 
 void Player::OnAttackInput()
@@ -172,9 +173,11 @@ void Player::OnStateEntered(const std::string& stateName)
 	switch (GetStateNameAsEnum(stateName)) {
 	case EnumPlayerState::IDLE_STATE:
 		// tell the animator to be playing the IDLE anim
+		animator.Play(IDLE, true);
 		break;
 	case EnumPlayerState::WALKING_STATE:
 		// tell the animator to be playing the WALKING anim
+		animator.Play(WALKING, true);
 		break;
 	case EnumPlayerState::ATTACKING_STATE:
 		// tell the animator to be playing the ATTACKING anim
