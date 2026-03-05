@@ -59,6 +59,9 @@
     <ClInclude Include="Singletons\PlayerStatus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Animation\FlyweightAnimator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\POSEY_IDLE_01.png">

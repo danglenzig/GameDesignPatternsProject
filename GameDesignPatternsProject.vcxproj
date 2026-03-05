@@ -142,6 +142,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animation\FlyweightAnimator.h" />
     <ClInclude Include="Animation\PlayerAnimator.h" />
     <ClInclude Include="Data\Structs.h" />
     <ClInclude Include="EventSystem\Event.h" />

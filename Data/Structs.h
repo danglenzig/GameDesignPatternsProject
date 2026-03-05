@@ -16,6 +16,8 @@ struct EnemyConfig
 	float speed;
 	Vector2 size;
 	EnumAggro aggro;
+	float fps;
+	size_t numberOfFrames;
 
 	//...more coming
 };

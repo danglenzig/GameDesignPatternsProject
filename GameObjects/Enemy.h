@@ -6,6 +6,7 @@
 #include "../EventSystem/GameEvents.h"
 #include <iostream>
 #include "raymath.h"
+#include "../Animation/FlyweightAnimator.h"
 
 class Enemy : public GameObject
 {
@@ -19,14 +20,16 @@ private:
 	float speedAdjust = 1.0f; // TODO, based on aggro & followPlayer valiue
 
 	size_t slapHandle = -1;
+	size_t currentFrame = 0;
 
-	
+	float frameTimer = 0.0f;
 
 	EnemyConfig myConfig;
 
+	FlyweightAnimator& animator;
 
 public:
-	Enemy(const EnemyConfig& _config)
+	Enemy(const EnemyConfig& _config, FlyweightAnimator& animatorRef) : animator(animatorRef)
 	{
 		myConfig = _config;
 		slapHandle = GameEvents::Instance().OnPlayerSlap.Subscribe(
@@ -57,9 +60,20 @@ public:
 
 void Enemy::OnFrameUpdate(const float& dT)
 {
+
+
+
 	if (followPlayer) {
 		MoveTowardPlayer(dT);
 	}
+
+
+	frameTimer += dT;
+	if (frameTimer >= 1 / myConfig.fps) {
+		frameTimer = 0.0f;
+		currentFrame = (currentFrame + 1) % myConfig.numberOfFrames;
+	}
+
 
 	
 }
@@ -68,12 +82,8 @@ void Enemy::FixDrawData()
 {
 	drawData.position = position;
 	drawData.lookAngle = lookAngle;
-
-	// TODO: get from config in constructor
 	drawData.size = myConfig.size;
-
-	// TODO: get from FlyweightAnimator
-	drawData.ptrToTexture = nullptr;
+	drawData.ptrToTexture = animator.GetPtrToTexture(myConfig.configName, currentFrame);
 }
 
 void Enemy::Initialize()
