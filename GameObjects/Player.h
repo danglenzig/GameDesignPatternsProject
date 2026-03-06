@@ -13,7 +13,8 @@
 enum EnumPlayerState {
 	IDLE_STATE,
 	WALKING_STATE,
-	ATTACKING_STATE
+	ATTACKING_STATE,
+	REACTING_STATE
 };
 
 
@@ -24,10 +25,12 @@ private:
 	const std::string IDLE = "IDLE";
 	const std::string WALKING = "WALKING";
 	const std::string ATTACKING = "ATTACKING";
+	const std::string REACTING = "REACTING";
 	const std::unordered_map<std::string, EnumPlayerState> statesMap = {
 		{"IDLE", IDLE_STATE},
 		{"WALKING", WALKING_STATE},
-		{"ATTACKING", ATTACKING_STATE}
+		{"ATTACKING", ATTACKING_STATE},
+		{"REACTING", REACTING_STATE}
 	};
 
 	float speed = 300.0f;
@@ -39,6 +42,10 @@ private:
 	float cooldownTimer = 0.0f;
 	size_t attackInputHandle = -1;
 	PlayerAnimator animator;
+
+	const float REACT_COOLDOWN = 1.0f;
+	float reactCooldownTimer = 0.0f;
+	bool onReactCooldown = false;
 	
 	void ConfigureFSM();
 	void OnAttackInput();
@@ -49,6 +56,9 @@ private:
 	void IdleUpdateBehavior(const float& dT, const Vector2& moveInput);
 	void WalkingUpdateBehavior(const float& dT, const Vector2& moveInput);
 	void AttackingUpdateBehavior(const float& dT, const Vector2& moveInput);
+	void ReactingUpdateBehavior(const float& dT, const Vector2& moveInput);
+	void OnDamageTaken();
+	void HandleAnimationEvent(const AnimEvent& event);
 
 public:
 	Vector2 GetPosition() const { return position; }
@@ -61,6 +71,7 @@ public:
 		health = startHealth;
 		ConfigureFSM();
 		FixDrawData();
+		PlayerStatus::Instance().IncreasePlayerHealth(health + 1);
 		GameEvents::Instance().OnAttackInput.Subscribe(
 			[this]() {
 				OnAttackInput();
@@ -71,6 +82,15 @@ public:
 
 void Player::OnFrameUpdate(const float& dT) 
 {
+
+	if (onReactCooldown) {
+		reactCooldownTimer += dT;
+		if (reactCooldownTimer >= REACT_COOLDOWN) {
+			onReactCooldown = false;
+			reactCooldownTimer = 0.0f;
+		}
+	}
+
 	PlayerStatus::Instance().SetPlayerPosition(position);
 	animator.OnUpdate(dT);
 
@@ -87,12 +107,15 @@ void Player::OnFrameUpdate(const float& dT)
 	case EnumPlayerState::ATTACKING_STATE:
 		AttackingUpdateBehavior(dT, moveInput);
 		break;
+	case EnumPlayerState::REACTING_STATE:
+		ReactingUpdateBehavior(dT, moveInput);
+		break;
 	}
 }
 
 void Player::IdleUpdateBehavior(const float& dT, const Vector2& moveInput)
 {
-	if (Vector2LengthSqr(moveInput) > FLT_EPSILON * FLT_EPSILON) {
+	if (Vector2LengthSqr(moveInput) > FLT_EPSILON) {
 		playerFSM.TryTransition(WALKING);
 		return;
 	}
@@ -101,7 +124,7 @@ void Player::IdleUpdateBehavior(const float& dT, const Vector2& moveInput)
 }
 void Player::WalkingUpdateBehavior(const float& dT, const Vector2& moveInput)
 {
-	if (Vector2LengthSqr(moveInput) <= FLT_EPSILON * FLT_EPSILON) {
+	if (Vector2LengthSqr(moveInput) <= FLT_EPSILON) {
 		playerFSM.TryTransition(IDLE);
 		return;
 	}
@@ -113,6 +136,11 @@ void Player::WalkingUpdateBehavior(const float& dT, const Vector2& moveInput)
 }
 void Player::AttackingUpdateBehavior(const float& dT, const Vector2& moveInput)
 {
+	FixDrawData();
+}
+void Player::ReactingUpdateBehavior(const float& dT, const Vector2& moveInput)
+{
+	
 	FixDrawData();
 }
 
@@ -135,12 +163,17 @@ void Player::ConfigureFSM()
 	playerFSM.Initialize(IDLE);
 	playerFSM.AddState(ATTACKING);
 	playerFSM.AddState(WALKING);
+	playerFSM.AddState(REACTING);
+
 	playerFSM.AddTransition(IDLE, WALKING);
 	playerFSM.AddTransition(IDLE, ATTACKING);
+	playerFSM.AddTransition(IDLE, REACTING);
 
 	playerFSM.AddTransition(WALKING, IDLE);
 	playerFSM.AddTransition(WALKING, ATTACKING);
+	playerFSM.AddTransition(WALKING, REACTING);
 
+	playerFSM.AddTransition(REACTING, IDLE);
 	playerFSM.AddTransition(ATTACKING, IDLE);
 
 	playerFSM.AddListener(
@@ -150,12 +183,48 @@ void Player::ConfigureFSM()
 	);
 	OnStateEntered(IDLE);
 	PlayerStatus::Instance().SetPlayerState(playerFSM.currentStateName);
+
+
+	
+
+	GameEvents::Instance().DamageTaken.Subscribe(
+		[this]() {
+			if (playerFSM.currentStateName != REACTING) {
+				OnDamageTaken();
+			}
+		}
+	);
+
+	animator.AddListener(
+		[this](const AnimEvent& event) {
+			HandleAnimationEvent(event);
+		}
+	);
+
+}
+
+void Player::HandleAnimationEvent(const AnimEvent& event)
+{
+	if (event.event == EnumAnimEvent::FINISHED) {
+		if (event.animName == REACTING) {
+			playerFSM.TryTransition(IDLE);
+		}
+	}
 }
 
 void Player::OnAttackInput()
 {
 	// TODO: transition to attacking state
 	std::cout << "SLAP!\n";
+}
+
+void Player::OnDamageTaken()
+{
+	if (onReactCooldown) return;
+	reactCooldownTimer = 0.0f;
+	onReactCooldown = true;
+
+	playerFSM.TryTransition(REACTING);
 }
 
 void Player::OnStateEvent(const StateEvent& e) 
@@ -187,7 +256,11 @@ void Player::OnStateEntered(const std::string& stateName)
 		// calculate a damage area
 		// invoke GameEvents::Instance().OnPlayerSlap with damage area
 		break;
+	case EnumPlayerState::REACTING_STATE:
+		animator.Play(REACTING, false);
+		break;
 	}
+	
 	PlayerStatus::Instance().SetPlayerState(playerFSM.currentStateName);
 }
 

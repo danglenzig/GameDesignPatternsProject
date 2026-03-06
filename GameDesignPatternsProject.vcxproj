@@ -160,6 +160,15 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\POSEY_IDLE_01.png" />
+    <Image Include="Resources\Textures\POSEY_REACT_01.png" />
+    <Image Include="Resources\Textures\POSEY_REACT_03.png" />
+    <Image Include="Resources\Textures\POSEY_REACT_05.png" />
+    <Image Include="Resources\Textures\POSEY_REACT_07.png" />
+    <Image Include="Resources\Textures\POSEY_REACT_09.png" />
+    <Image Include="Resources\Textures\POSEY_REACT_11.png" />
+    <Image Include="Resources\Textures\POSEY_REACT_13.png" />
+    <Image Include="Resources\Textures\POSEY_REACT_15.png" />
+    <Image Include="Resources\Textures\POSEY_REACT_17.png" />
     <Image Include="Resources\Textures\POSEY_RUN_00.png" />
     <Image Include="Resources\Textures\POSEY_RUN_01.png" />
     <Image Include="Resources\Textures\POSEY_RUN_02.png" />

@@ -18,6 +18,7 @@ struct EnemyConfig
 	EnumAggro aggro;
 	float fps;
 	size_t numberOfFrames;
+	float damage;
 	std::string uuid;
 
 	//...more as needed

@@ -17,6 +17,10 @@ private:
 	Vector2 playerPosition = { 0,0 };
 	std::string playerState = "NONE";
 
+	const float hitRadius = 40.0f;
+
+	int playerHealth = -1;
+
 
 public:
 
@@ -39,6 +43,20 @@ public:
 	std::string GetPlayerState() const {
 		return playerState;
 	}
+
+	int GetPlayerHealth() const { return playerHealth; }
+	void DecreasePlayerHealth(const int& decreaseAmount)
+	{
+		if (playerHealth - decreaseAmount < 0) {
+			playerHealth = 0;
+		}
+		else {
+			playerHealth -= decreaseAmount;
+		}
+	}
+	void IncreasePlayerHealth(const int& increaseAmount) { playerHealth += increaseAmount; }
+
+	float GetHitRadius() const { return hitRadius; }
 
 
 };
