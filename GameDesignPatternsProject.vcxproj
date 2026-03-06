@@ -152,6 +152,7 @@
     <ClInclude Include="GameObjects\GameObject.h" />
     <ClInclude Include="GameObjects\Player.h" />
     <ClInclude Include="Singletons\InputHandler.h" />
+    <ClInclude Include="Singletons\MiscTools.h" />
     <ClInclude Include="Singletons\PlayerStatus.h" />
     <ClInclude Include="Singletons\RenderSystem.h" />
     <ClInclude Include="StateMachine\StateMachine.h" />

@@ -7,8 +7,8 @@ class FlyweightAnimator
 {
 private:
 	std::vector<std::string> skeeterPaths = {
-		"Resources/Textures/SKEETER_A00",
-		"Resources/Textures/SKEETER_A01",
+		"Resources/Textures/SKEETER_A00.png",
+		"Resources/Textures/SKEETER_A01.png",
 	};
 	std::vector<Texture2D> skeeterTextures;
 

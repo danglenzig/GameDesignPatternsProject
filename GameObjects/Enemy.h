@@ -37,6 +37,7 @@ public:
 				OnPlayerSlap(_data);
 			}
 		);
+		
 	}
 	~Enemy()
 	{
@@ -44,6 +45,8 @@ public:
 	}
 
 	void OnFrameUpdate(const float& dT) override;
+	void OnUpdate(const float& dT);
+
 	void FixDrawData() override;
 	void Initialize() override;
 	void Activate(const Vector2& startPos);
@@ -53,30 +56,32 @@ public:
 	void HighAggroBehaivior(const float& dT);
 	void MoveTowardPlayer(const float& dT);
 	void OnPlayerSlap(const DamageSectorData& _data);
+	void Recycle();
 
 	bool IsActive() const { return isActive; }
 	void SetFollowPlayer(const bool& value) { followPlayer = value; }
+	void SetEnemyConfig(const EnemyConfig& newConfig) { myConfig = newConfig; }
+	std::string GetUUID() const { return myConfig.uuid; }
 };
 
 void Enemy::OnFrameUpdate(const float& dT)
 {
-
-
-
+	// not working (?)
+}
+// patch fix for^^
+void Enemy::OnUpdate(const float& dT)
+{
 	if (followPlayer) {
 		MoveTowardPlayer(dT);
 	}
-
 
 	frameTimer += dT;
 	if (frameTimer >= 1 / myConfig.fps) {
 		frameTimer = 0.0f;
 		currentFrame = (currentFrame + 1) % myConfig.numberOfFrames;
 	}
-
-
-	
 }
+
 
 void Enemy::FixDrawData()
 {
@@ -93,6 +98,8 @@ void Enemy::Initialize()
 
 void Enemy::Activate(const Vector2& startPos)
 {
+
+	
 	//...
 	position = startPos;
 	isActive = true;
@@ -101,6 +108,12 @@ void Enemy::Activate(const Vector2& startPos)
 void Enemy::Deactivate()
 {
 	isActive = false;
+}
+
+void Enemy::Recycle()
+{
+	isActive = false;
+	// TODO: recycle behavior
 }
 
 void Enemy::MoveTowardPlayer(const float& dT)
@@ -121,6 +134,8 @@ void Enemy::MoveTowardPlayer(const float& dT)
 
 	FixDrawData();
 }
+
+
 
 void Enemy::OnPlayerSlap(const DamageSectorData& slapData)
 {
@@ -143,7 +158,7 @@ void Enemy::OnPlayerSlap(const DamageSectorData& slapData)
 
 	if (withinRadius && withinAngle)
 	{
-		// die
+		GameEvents::Instance().OnEnemyDied.Invoke(myConfig);
 	}
 
 }

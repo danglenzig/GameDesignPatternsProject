@@ -1,6 +1,8 @@
 #pragma once
 #include "raylib.h"
 #include "Event.h"
+#include "../Data/Structs.h"
+//#include "../GameObjects/EnemyFactory.h"
 
 
 struct DamageSectorData
@@ -24,5 +26,6 @@ public:
 
 	Event<float> OnFrameUpdate;
 	Event<DamageSectorData> OnPlayerSlap;
+	Event<EnemyConfig> OnEnemyDied;
 	SimpleEvent OnAttackInput;
 };

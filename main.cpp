@@ -25,12 +25,12 @@ int main()
 	// Get singleton references
 	InputHandler& inputHandler	= InputHandler::Instance();
 	RenderSystem& renderSystem	= RenderSystem::Instance();
-	//EnemySpawner& enemySpawner	= EnemySpawner::Instance(); // this needs a ref to the player and the renderSystem
 	GameEvents& gameEvents		= GameEvents::Instance();
 	PlayerStatus& playerStatus = PlayerStatus::Instance();
 	
 	Player player({ 640, 360 }, 1000);
 	EnemyFactory enemyFactory;
+	enemyFactory.InitializeEnemyPool();
 
 
 	// game loop
@@ -47,8 +47,9 @@ int main()
 		// tell the renderSystem to render the player
 		renderSystem.RenderGameObject(&player);
 		// 
-		// tell the enemy system to render the enemies
+		// tell the enemy system to render the enemies & hit markers
 		enemyFactory.RenderEnemies();
+		enemyFactory.RenderHitMarkers();
 
 		EndDrawing();
 	}

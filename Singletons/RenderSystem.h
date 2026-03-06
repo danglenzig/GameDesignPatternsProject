@@ -47,8 +47,6 @@ public:
 				WHITE
 			);
 		}
-
-
 	}
 
 };
