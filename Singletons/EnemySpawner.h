@@ -1,5 +1,8 @@
 #pragma once
+#include "../GameObjects/Player.h"
 
+
+// Deprecated
 
 class EnemySpawner
 {
@@ -19,4 +22,10 @@ public:
 		static EnemySpawner instance; // created once, lives forever
 		return instance;
 	}
+
+	void SetPlayerReference(const Player& _player)
+	{
+		//player = _player;
+	}
+
 };
