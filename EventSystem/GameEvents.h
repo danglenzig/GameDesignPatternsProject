@@ -28,4 +28,5 @@ public:
 	Event<DamageSectorData> OnPlayerSlap;
 	Event<EnemyConfig> OnEnemyDied;
 	SimpleEvent OnAttackInput;
+	SimpleEvent DamageTaken;
 };

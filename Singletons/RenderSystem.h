@@ -1,6 +1,9 @@
 #pragma once
 #include "../GameObjects/GameObject.h"
 #include "raylib.h"
+#include "PlayerStatus.h"
+#include <string>
+
 
 
 class RenderSystem
@@ -20,6 +23,18 @@ public:
 	static RenderSystem& Instance() {
 		static RenderSystem instance; // created once, lives forever
 		return instance;
+	}
+
+	void UpdateHud(const size_t secondsPlayed)
+	{
+		DrawText("WASD to move...", 10, 10, 30, BLACK);
+		int playerHealth = PlayerStatus::Instance().GetPlayerHealth();
+		std::string phStr = "Player Health: " + std::to_string(playerHealth);
+		DrawText(phStr.c_str(), 10, 50, 30, BLACK);
+
+		std::string secondsPlayedStr = "Seconds Played: " + std::to_string(secondsPlayed);
+		DrawText(secondsPlayedStr.c_str(), 10, 90, 30, BLACK);
+
 	}
 
 	void RenderGameObject(GameObject* ptrToGameObject)

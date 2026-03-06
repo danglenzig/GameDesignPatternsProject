@@ -78,6 +78,19 @@ void PlayerAnimator::Initialize()
 				"Resources/Textures/POSEY_RUN_05.png",
 			}, 12.0f
 		},
+		{"REACTING",
+			{
+				"Resources/Textures/POSEY_REACT_01.png",
+				"Resources/Textures/POSEY_REACT_03.png",
+				"Resources/Textures/POSEY_REACT_05.png",
+				"Resources/Textures/POSEY_REACT_07.png",
+				"Resources/Textures/POSEY_REACT_09.png",
+				"Resources/Textures/POSEY_REACT_11.png",
+				"Resources/Textures/POSEY_REACT_13.png",
+				"Resources/Textures/POSEY_REACT_15.png",
+				"Resources/Textures/POSEY_REACT_17.png",
+			}, 20.0f
+		}
 	};
 
 	LoadAnimations(configs);
@@ -115,6 +128,7 @@ void PlayerAnimator::OnUpdate(const float& dT)
 	if (ptrToCurrentAnim->timer < ptrToCurrentAnim->interval) return;
 	ptrToCurrentAnim->timer = 0.0f;
 	ptrToCurrentAnim->currentFrame++;
+	std::string animName = ptrToCurrentAnim->name;
 
 	if (ptrToCurrentAnim->currentFrame >= ptrToCurrentAnim->frames.size()) {
 		if (ptrToCurrentAnim->loop) {
@@ -123,7 +137,10 @@ void PlayerAnimator::OnUpdate(const float& dT)
 		}
 		else
 		{
-			Dispatch({ ptrToCurrentAnim->name, EnumAnimEvent::FINISHED });
+			if (!ptrToCurrentAnim->frames.empty()) {
+				ptrToCurrentAnim->currentFrame = ptrToCurrentAnim->frames.size() - 1;
+			}
+			Dispatch({ animName, EnumAnimEvent::FINISHED });
 		}
 		return;
 	}

@@ -31,18 +31,28 @@ int main()
 	Player player({ 640, 360 }, 1000);
 	EnemyFactory enemyFactory;
 	enemyFactory.InitializeEnemyPool();
+	size_t secondsPlayed = 0;
+
+	float ta = 0.0;
 
 
 	// game loop
 	while (!WindowShouldClose()) {
 		
 		// update
-		gameEvents.OnFrameUpdate.Invoke(GetFrameTime());
+		float dT = GetFrameTime();
+		gameEvents.OnFrameUpdate.Invoke(dT);
+
+		ta += dT;
+		if (ta >= 1.0f) {
+			ta = 0.0f;
+			secondsPlayed += 1;
+		}
 		
 
 		// draw
 		ClearBackground({ 85, 107,47,255 }); // olive green
-		DrawText("WASD to move...", 10, 10, 30, BLACK);
+		
 
 		// tell the renderSystem to render the player
 		renderSystem.RenderGameObject(&player);
@@ -50,6 +60,7 @@ int main()
 		// tell the enemy system to render the enemies & hit markers
 		enemyFactory.RenderEnemies();
 		enemyFactory.RenderHitMarkers();
+		renderSystem.UpdateHud(secondsPlayed);
 
 		EndDrawing();
 	}

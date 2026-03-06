@@ -11,11 +11,17 @@ class EnemyFactory
 {
 private:
 
+	const int minSkewAdjust = -500;
+	const int maxSkewAdjust = 1500;
+
 	const size_t poolBatchSize = 500;
-	float spawnInterval = 0.25f;
+	float spawnInterval = 1.0f;
 	float spawnTimer = 0.0f;
 	FlyweightAnimator animator;
 	bool beSpawning = true;
+
+
+
 
 	size_t toSpawn = 10;
 	size_t updateHandle = -1;
@@ -31,12 +37,14 @@ private:
 	void SpawnEnemy();
 	std::vector<Enemy*> GetActiveEnemyPtrs();
 
+	/*
 	std::vector<Vector2> recyclePoints = {
 		{ 0, 360	},
 		{ 1280, 360	},
 		{ 500, 0	},
 		{ 500, 720	},
 	};
+	*/
 
 	std::vector<Vector2> spawnPoints = {
 		{ 0, 0		},
@@ -60,11 +68,12 @@ private:
 	EnemyConfig GetSkeeterConfig() const {
 		EnemyConfig skeeterConfig = {
 		"SKEETER",
-		100.0f, // slightly randomize this
+		80.0f,
 		{50,50},
 		EnumAggro::LOW,
 		10.0f,
 		2,
+		2.0f,
 		MiscTools::Instance().GetUUID()
 		};
 		return skeeterConfig;
@@ -162,6 +171,9 @@ void EnemyFactory::SpawnEnemy()
 	// check if actually found
 	if (iterator != enemyPool.end()) {
 		size_t randoSpawnIdx = GetRandomValue(0, spawnPoints.size() - 1);
+
+		float randoSpeedAdjust = (float)GetRandomValue(minSkewAdjust, maxSkewAdjust) / 1000.0f;
+		iterator->AdjustSpeedSkew(randoSpeedAdjust);
 		iterator->Activate(spawnPoints[randoSpawnIdx]);
 	}
 	else {
