@@ -35,6 +35,11 @@ This project is my implementation of that assignment, with an emphasis on clean 
 - **Objective**
   - Survive as long as possible against an endless, escalating swarm of angry killer bees
 
+# Raylib & C++ Learning Context
+This is my first project using `raylib`, and it was also my first substantial C++ assignment. Most of my prior experience has been with C#, Python, and GDScript, so a secondary goal for this project was simply getting comfortable with C++ syntax, build tooling, and memory/ownership rules while learning a new game library.
+
+Because of that, the codebase is intentionally modest in scope and occasionally a bit “naive” in its C++ usage: I lean on simple value types, standard containers, and straightforward control flow rather than more advanced language features or heavy template metaprogramming. The focus was on building clear, reasonably well-structured gameplay code and exercising the targeted design patterns, not on writing production-grade engine code. As my C++ experience grows, I would expect to refine some of these choices (for example, tightening const-correctness, improving lifetime management, and adding more robust error handling), but this version represents a solid snapshot of my current level.
+
 # Design Patterns Employed
 ## Finite State Machine (FSM) Pattern
 FSM is implemented in `StateMachine.h` (`FSM`, `FSM_State`, and `FSM_Events` classes). The `Player` owns an `FSM` instance that manages named states (`IDLE`, `WALKING`, `ATTACKING`, `REACTING`) and allowed transitions. The FSM also emits state enter/exit events, which trigger various behaviors and animations.
