@@ -36,7 +36,8 @@ private:
 	void HighAggroBehaivior(const float& dT);
 	void MoveTowardPlayer(const float& dT);
 	void MoveTowardGatherPoint(const float& dT);
-	void OnPlayerSlap(const DamageSectorData& _data);
+	
+	
 
 	std::vector<Vector2> recyclePoints = {
 		{ 0, 360	},
@@ -87,11 +88,14 @@ public:
 		float randomFloat = (float)GetRandomValue(-500, 500) / 1000.0f;
 		modeInterval += (modeInterval * randomFloat);
 		myConfig = _config;
+		/*
 		slapHandle = GameEvents::Instance().OnPlayerSlap.Subscribe(
 			[this](const DamageSectorData& _data) {
 				OnPlayerSlap(_data);
 			}
 		);
+		*/
+		
 		
 	}
 	~Enemy()
@@ -114,7 +118,20 @@ public:
 	void SetEnemyConfig(const EnemyConfig& newConfig) { myConfig = newConfig; }
 	void AdjustSpeedSkew(const float& adjust) { speedSkew += adjust; }
 	std::string GetUUID() const { return myConfig.uuid; }
+	//void SubscribeToPlayerSlap();
+	void OnPlayerSlap(const DamageSectorData& _data);
 };
+
+/*
+void Enemy::SubscribeToPlayerSlap()
+{	
+	slapHandle = GameEvents::Instance().OnPlayerSlap.Subscribe(
+		[this](const DamageSectorData& _data) {
+			OnPlayerSlap(_data);
+		}
+	);
+}
+*/
 
 void Enemy::OnFrameUpdate(const float& dT)
 {
@@ -240,6 +257,7 @@ void Enemy::HandleInPlayerHitRadius()
 
 void Enemy::OnPlayerSlap(const DamageSectorData& slapData)
 {
+
 	bool withinRadius = Vector2DistanceSqr(position, slapData.position) <= (slapData.radius * slapData.radius);
 	bool withinAngle = false;
 
@@ -260,6 +278,9 @@ void Enemy::OnPlayerSlap(const DamageSectorData& slapData)
 	if (withinRadius && withinAngle)
 	{
 		GameEvents::Instance().OnEnemyDied.Invoke(myConfig);
+
+		std::cout << myConfig.uuid << " got slapped\n";
+		PlayerStatus::Instance().IncrementBugsSlapped();
 	}
 
 }

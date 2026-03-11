@@ -3,6 +3,7 @@
 #include "raylib.h"
 #include "PlayerStatus.h"
 #include <string>
+#include <iostream>
 
 
 
@@ -10,12 +11,18 @@ class RenderSystem
 {
 private:
 	// private constructor -- can't create from outside
-	RenderSystem() {}
+	RenderSystem()
+	{
+		//Texture t = LoadTexture(bgPath.c_str());
+		//ptrToBG = &t;
+	}
 
 	// delete copy constructor and assignment operator
 	// This prevents duplication
 	RenderSystem(const RenderSystem&) = delete;
 	RenderSystem& operator=(const RenderSystem&) = delete;
+	std::string bgPath = "Resources/Textures/Grass.png";
+	//Texture2D* ptrToBG = nullptr;
 
 public:
 
@@ -34,6 +41,24 @@ public:
 
 		std::string secondsPlayedStr = "Seconds Played: " + std::to_string(secondsPlayed);
 		DrawText(secondsPlayedStr.c_str(), 10, 90, 30, BLACK);
+
+		size_t beesSlapped = PlayerStatus::Instance().GetBugsSlapped();
+		std::string bugsSlappedStr = "Bees Slapped: " + std::to_string(beesSlapped);
+		DrawText(bugsSlappedStr.c_str(), 10, 130, 30, BLACK);
+	}
+
+	void RenderBackground()
+	{
+		Texture t = LoadTexture(bgPath.c_str());
+		DrawTexturePro(
+			t,
+			{ 0 ,0, 1280, 720 },
+			{ 0, 0, 1280, 720 },
+			{ 1280, 720 },
+			0.0f,
+			WHITE
+
+		);
 
 	}
 

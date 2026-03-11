@@ -6,6 +6,7 @@
 #include "Enemy.h"
 #include <vector>
 #include <algorithm>
+#include "../EventSystem/GameEvents.h"
 
 class EnemyFactory
 {
@@ -26,6 +27,7 @@ private:
 	size_t toSpawn = 10;
 	size_t updateHandle = -1;
 	size_t diedHandle = - 1;
+	size_t slapHandle = -1;
 
 	std::vector<Enemy> enemyPool;
 	// std::vector<HitMarker> hitMarkerPool
@@ -36,6 +38,7 @@ private:
 	void OnFrameUpdate(const float& dT);
 	void SpawnEnemy();
 	std::vector<Enemy*> GetActiveEnemyPtrs();
+	void OnPlayerSlap(const DamageSectorData& _data);
 
 	/*
 	std::vector<Vector2> recyclePoints = {
@@ -97,10 +100,24 @@ public:
 				OnFrameUpdate(dT);
 			}
 		);
+		slapHandle = GameEvents::Instance().OnPlayerSlap.Subscribe(
+			[this](const DamageSectorData& _data) {
+				OnPlayerSlap(_data);
+			}
+		);
 	}
 
 
 };
+
+void EnemyFactory::OnPlayerSlap(const DamageSectorData& _data)
+{
+	for (auto& e : enemyPool) {
+		if (e.IsActive()) {
+			e.OnPlayerSlap(_data);
+		}
+	}
+}
 
 
 void EnemyFactory::InitializeEnemyPool()
@@ -108,11 +125,10 @@ void EnemyFactory::InitializeEnemyPool()
 	// for now, just skeeters
 	for (int i = 0; i < poolBatchSize; i++) {
 		Enemy enemy(GetSkeeterConfig(), animator);
+		
+		
 		enemyPool.push_back(enemy);
 
-		//std::cout << "Adding " << enemy.GetUUID() << " -- Active: " << enemy.IsActive() <<"\n";
-		
-		// add a hit marker to the hit marker pool
 	}
 
 }
