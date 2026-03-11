@@ -6,11 +6,7 @@
 class PlayerStatus
 {
 private:
-	// private constructor -- can't create from outside
 	PlayerStatus() {}
-
-	// delete copy constructor and assignment operator
-	// This prevents duplication
 	PlayerStatus(const PlayerStatus&) = delete;
 	PlayerStatus& operator=(const PlayerStatus&) = delete;
 
@@ -24,10 +20,8 @@ private:
 
 
 public:
-
-	// the ONLY way to get the instance
 	static PlayerStatus& Instance() {
-		static PlayerStatus instance; // created once, lives forever
+		static PlayerStatus instance;
 		return instance;
 	}
 

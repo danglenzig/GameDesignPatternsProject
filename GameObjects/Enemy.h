@@ -18,8 +18,8 @@ private:
 	bool followPlayer = true;
 	bool recycling = false;
 
-	float speedSkew = 1.0f; // TODO; randomize
-	float speedAdjust = 1.0f; // TODO, based on aggro & followPlayer valiue
+	float speedSkew = 1.0f;
+	float speedAdjust = 1.0f;
 
 	size_t slapHandle = -1;
 	size_t currentFrame = 0;
@@ -88,14 +88,6 @@ public:
 		float randomFloat = (float)GetRandomValue(-500, 500) / 1000.0f;
 		modeInterval += (modeInterval * randomFloat);
 		myConfig = _config;
-		/*
-		slapHandle = GameEvents::Instance().OnPlayerSlap.Subscribe(
-			[this](const DamageSectorData& _data) {
-				OnPlayerSlap(_data);
-			}
-		);
-		*/
-		
 		
 	}
 	~Enemy()
@@ -121,17 +113,6 @@ public:
 	//void SubscribeToPlayerSlap();
 	void OnPlayerSlap(const DamageSectorData& _data);
 };
-
-/*
-void Enemy::SubscribeToPlayerSlap()
-{	
-	slapHandle = GameEvents::Instance().OnPlayerSlap.Subscribe(
-		[this](const DamageSectorData& _data) {
-			OnPlayerSlap(_data);
-		}
-	);
-}
-*/
 
 void Enemy::OnFrameUpdate(const float& dT)
 {
@@ -192,9 +173,6 @@ void Enemy::Initialize()
 
 void Enemy::Activate(const Vector2& startPos)
 {
-
-	
-	//...
 	position = startPos;
 	isActive = true;
 }
@@ -207,7 +185,6 @@ void Enemy::Deactivate()
 void Enemy::Recycle()
 {
 	isActive = false;
-	// TODO: recycle behavior
 }
 
 void Enemy::MoveTowardPlayer(const float& dT)
@@ -217,15 +194,11 @@ void Enemy::MoveTowardPlayer(const float& dT)
 
 	Vector2 direction = Vector2Subtract(playerPos, position);
 	direction = Vector2Normalize(direction);
-	
-	// TODO skew direction angle
 
 	float distanceThisFrame = myConfig.speed * speedSkew * speedAdjust * dT;
 	lookAngle = Vector2Angle({ 1,0 }, direction);
 	position = Vector2Add(position, Vector2Scale(direction, distanceThisFrame));
-
-	// TODO: handle animation
-
+	
 	FixDrawData();
 }
 

@@ -10,25 +10,18 @@
 class RenderSystem
 {
 private:
-	// private constructor -- can't create from outside
 	RenderSystem()
 	{
-		//Texture t = LoadTexture(bgPath.c_str());
-		//ptrToBG = &t;
+		
 	}
-
-	// delete copy constructor and assignment operator
-	// This prevents duplication
+	
 	RenderSystem(const RenderSystem&) = delete;
 	RenderSystem& operator=(const RenderSystem&) = delete;
 	std::string bgPath = "Resources/Textures/Grass.png";
-	//Texture2D* ptrToBG = nullptr;
 
 public:
-
-	// the ONLY way to get the instance
 	static RenderSystem& Instance() {
-		static RenderSystem instance; // created once, lives forever
+		static RenderSystem instance;
 		return instance;
 	}
 

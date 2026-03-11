@@ -36,9 +36,9 @@ This project is my implementation of that assignment, with an emphasis on clean 
   - Survive as long as possible against an endless, escalating swarm of angry killer bees
 
 # Raylib & C++ Learning Context
-This is my first project using `raylib`, and it was also my first substantial C++ assignment. Most of my prior experience has been with C#, Python, and GDScript, so a secondary goal for this project was simply getting comfortable with C++ syntax, build tooling, and memory/ownership rules while learning a new game library.
+This is my first project using `raylib`, and it was also my first substantial C++ assignment. A secondary goal for this project was simply getting comfortable with C++ syntax, build tooling, and memory/ownership rules while learning a new game library.
 
-Because of that, the codebase is intentionally modest in scope and occasionally a bit “naive” in its C++ usage: I lean on simple value types, standard containers, and straightforward control flow rather than more advanced language features or heavy template metaprogramming. The focus was on building clear, reasonably well-structured gameplay code and exercising the targeted design patterns, not on writing production-grade engine code. As my C++ experience grows, I would expect to refine some of these choices (for example, tightening const-correctness, improving lifetime management, and adding more robust error handling), but this version represents a solid snapshot of my current level.
+Because of that, the codebase is intentionally modest in scope and occasionally naive in its C++ usage: I lean on simple value types, standard containers, and straightforward control flow rather than more advanced language features or heavy template metaprogramming. The focus was on building clear, reasonably well-structured gameplay code and exercising the targeted design patterns, not on writing production-grade engine code. I also de-emphasized many aesthetic, amd "pure" game design concerns, like balancing, UI, replayability, and (well...let's be honest) fun, in order to concentrate on the core learning objectives and C++ fundamentals. As my C++ experience grows, I would expect to refine some of these choices (for example, tightening const-correctness, improving lifetime management, and adding more robust error handling), but this version represents a solid snapshot of my current level.
 
 # Design Patterns Employed
 ## Finite State Machine (FSM) Pattern
@@ -68,7 +68,7 @@ Client code does not construct `Enemy` objects directly; instead it relies on `E
 
 When an enemy dies, it raises `OnEnemyDied`, which `EnemyFactory` handles by calling `Recycle()` on the matching `Enemy` and marking it inactive so it can be reused later. This pattern is a natural fit for a swarm game where enemies are constantly being created and destroyed, because it avoids frequent heap allocations and keeps performance more predictable as the swarm grows.
 
-## Component
+## Composition
 While this project does not use a full entity–component system, it does lean on simple components via composition. The `Player` is a `GameObject` that owns an `FSM` for behavior/state transitions and a `PlayerAnimator` for visuals. The FSM decides *what* the player is doing (IDLE, WALKING, ATTACKING, REACTING), while the animator decides *how it looks* (which sprite sequence to play and when to loop or finish).
 
 Because these pieces are self-contained, they behave like reusable components: the same state machine and animation ideas could be attached to other characters without rewriting the core game loop. This keeps responsibilities narrow, reduces duplication, and makes it clear where to plug in new behavior.
