@@ -199,5 +199,8 @@
     <Image Include="Resources\Textures\POSEY_REACT_17.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Resources\Textures\GRASS.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

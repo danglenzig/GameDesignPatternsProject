@@ -90,6 +90,25 @@ void PlayerAnimator::Initialize()
 				"Resources/Textures/POSEY_REACT_15.png",
 				"Resources/Textures/POSEY_REACT_17.png",
 			}, 20.0f
+		},
+		{"ATTACKING",
+			{
+				//"Resources/Textures/POSEY_SLAP_B_00.png",
+				//"Resources/Textures/POSEY_SLAP_B_01.png",
+				//"Resources/Textures/POSEY_SLAP_B_02.png",
+				"Resources/Textures/POSEY_SLAP_B_03.png",
+				"Resources/Textures/POSEY_SLAP_B_04.png",
+				"Resources/Textures/POSEY_SLAP_B_05.png",
+				"Resources/Textures/POSEY_SLAP_B_06.png",
+				"Resources/Textures/POSEY_SLAP_B_07.png",
+				"Resources/Textures/POSEY_SLAP_B_08.png",
+				"Resources/Textures/POSEY_SLAP_B_09.png",
+				"Resources/Textures/POSEY_SLAP_B_10.png",
+				"Resources/Textures/POSEY_SLAP_B_11.png",
+				"Resources/Textures/POSEY_SLAP_B_12.png",
+				"Resources/Textures/POSEY_SLAP_B_13.png",
+				"Resources/Textures/POSEY_SLAP_B_14.png",
+			}, 20.0f
 		}
 	};
 

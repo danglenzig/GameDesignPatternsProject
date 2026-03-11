@@ -52,6 +52,7 @@ int main()
 
 		// draw
 		ClearBackground({ 85, 107,47,255 }); // olive green
+		//renderSystem.RenderBackground();
 		
 
 		// tell the renderSystem to render the player

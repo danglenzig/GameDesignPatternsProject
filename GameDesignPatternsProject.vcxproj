@@ -159,6 +159,7 @@
     <ClInclude Include="Tester.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Resources\Textures\GRASS.png" />
     <Image Include="Resources\Textures\POSEY_IDLE_01.png" />
     <Image Include="Resources\Textures\POSEY_REACT_01.png" />
     <Image Include="Resources\Textures\POSEY_REACT_03.png" />

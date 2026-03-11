@@ -59,6 +59,7 @@ private:
 	void ReactingUpdateBehavior(const float& dT, const Vector2& moveInput);
 	void OnDamageTaken();
 	void HandleAnimationEvent(const AnimEvent& event);
+	DamageSectorData GetDamageSectorArea();
 
 public:
 	Vector2 GetPosition() const { return position; }
@@ -208,14 +209,26 @@ void Player::HandleAnimationEvent(const AnimEvent& event)
 	if (event.event == EnumAnimEvent::FINISHED) {
 		if (event.animName == REACTING) {
 			playerFSM.TryTransition(IDLE);
+			return;
 		}
+		if (event.animName == ATTACKING) {
+			playerFSM.TryTransition(IDLE);
+			return;
+		}
+
 	}
 }
 
 void Player::OnAttackInput()
 {
 	// TODO: transition to attacking state
-	std::cout << "SLAP!\n";
+	//std::cout << "SLAP!\n";
+	if (playerFSM.currentStateName != ATTACKING) {
+		playerFSM.TryTransition(ATTACKING);
+	}
+
+
+
 }
 
 void Player::OnDamageTaken()
@@ -253,8 +266,11 @@ void Player::OnStateEntered(const std::string& stateName)
 		break;
 	case EnumPlayerState::ATTACKING_STATE:
 		// tell the animator to be playing the ATTACKING anim
+		animator.Play(ATTACKING, false);
 		// calculate a damage area
+		//DamageSectorData sector = ;
 		// invoke GameEvents::Instance().OnPlayerSlap with damage area
+		GameEvents::Instance().OnPlayerSlap.Invoke(GetDamageSectorArea());
 		break;
 	case EnumPlayerState::REACTING_STATE:
 		animator.Play(REACTING, false);
@@ -288,4 +304,31 @@ EnumPlayerState Player::GetStateNameAsEnum(const std::string& stateName)
 		return iterator->second;
 	}
 	std::cerr << "Error: '" << stateName << "' is not a valid Player State.\n";
+}
+
+DamageSectorData Player::GetDamageSectorArea()
+{
+	// create a sector in front of the player that can damage enemies
+	// this will be called in the ATTACKING state, and will be timed to the anim events
+
+	// the sector will be a circle with a radius of damageSectorRadius, centered on the player, but only in the direction the player is facing (so like a slice of pie)
+	// How?
+	// 1. get the direction the player is facing (use the lookAngle in drawData)
+	// 2. get the position of the player
+	// 3. create a sector that starts at lookAngle - some angle, and ends at lookAngle + some angle (so like a slice of pie)
+
+	const float OFFSET = 10.0f;
+	Vector2 facingDir = {
+		cosf(drawData.lookAngle), sinf(drawData.lookAngle)
+	};
+	DamageSectorData sector = {};
+	sector.position = {
+		drawData.position.x + (facingDir.x * OFFSET),
+		drawData.position.y + (facingDir.y * OFFSET)
+	};
+	sector.radius = damageSectorRadius;
+	sector.angleStart = drawData.lookAngle - (damageSectorAngle / 2.0f);
+	sector.angleEnd = drawData.lookAngle + (damageSectorAngle / 2.0f);
+	return sector;
+
 }
