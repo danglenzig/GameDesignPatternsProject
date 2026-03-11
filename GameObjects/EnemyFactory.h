@@ -30,24 +30,13 @@ private:
 	size_t slapHandle = -1;
 
 	std::vector<Enemy> enemyPool;
-	// std::vector<HitMarker> hitMarkerPool
-
 	
 	void OnEnemyDied(const EnemyConfig& enemyConfig);
-	
 	void OnFrameUpdate(const float& dT);
 	void SpawnEnemy();
 	std::vector<Enemy*> GetActiveEnemyPtrs();
 	void OnPlayerSlap(const DamageSectorData& _data);
 
-	/*
-	std::vector<Vector2> recyclePoints = {
-		{ 0, 360	},
-		{ 1280, 360	},
-		{ 500, 0	},
-		{ 500, 720	},
-	};
-	*/
 
 	std::vector<Vector2> spawnPoints = {
 		{ 0, 0		},
@@ -89,7 +78,6 @@ public:
 	void InitializeEnemyPool();
 
 	EnemyFactory() {
-		//InitializeEnemyPool();
 		diedHandle = GameEvents::Instance().OnEnemyDied.Subscribe(
 			[this](const EnemyConfig& _config) {
 				OnEnemyDied(_config);
@@ -125,12 +113,8 @@ void EnemyFactory::InitializeEnemyPool()
 	// for now, just skeeters
 	for (int i = 0; i < poolBatchSize; i++) {
 		Enemy enemy(GetSkeeterConfig(), animator);
-		
-		
 		enemyPool.push_back(enemy);
-
 	}
-
 }
 
 
@@ -161,21 +145,12 @@ void EnemyFactory::OnEnemyDied(const EnemyConfig& enemyConfig)
 	);
 	// check if actually found
 	if (iterator != enemyPool.end()) {
-		// enemy found
-		//SpawnHitMarker(iterator->GetDrawData().position);
 		iterator->Recycle();
-
-		// TODO
-		// update UI
-		// etc...
-
 	}
 }
 
 void EnemyFactory::SpawnEnemy()
 {
-	//std::cout << "[EnemyFactory.h] Attempting spawn...\n";
-
 	// find the first enemy in the pool that is not active
 	auto iterator = std::find_if(
 		enemyPool.begin(), enemyPool.end(),
@@ -226,7 +201,6 @@ void EnemyFactory::OnFrameUpdate(const float& dT)
 	for (Enemy* ptr : GetActiveEnemyPtrs()) {
 		if (ptr) {
 			ptr->OnUpdate(dT);
-			//RenderSystem::Instance().RenderGameObject(ptr);
 		}
 	}
 	

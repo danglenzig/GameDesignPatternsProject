@@ -96,7 +96,6 @@ void Player::OnFrameUpdate(const float& dT)
 	animator.OnUpdate(dT);
 
 	Vector2 moveInput = InputHandler::Instance().GetMoveInput();
-	//std::cout << "( " << moveInput.x << ", " << moveInput.y << " )\n";
 
 	switch (GetStateNameAsEnum(playerFSM.currentStateName)) {
 	case EnumPlayerState::IDLE_STATE:
@@ -221,8 +220,6 @@ void Player::HandleAnimationEvent(const AnimEvent& event)
 
 void Player::OnAttackInput()
 {
-	// TODO: transition to attacking state
-	//std::cout << "SLAP!\n";
 	if (playerFSM.currentStateName != ATTACKING) {
 		playerFSM.TryTransition(ATTACKING);
 	}
@@ -268,7 +265,6 @@ void Player::OnStateEntered(const std::string& stateName)
 		// tell the animator to be playing the ATTACKING anim
 		animator.Play(ATTACKING, false);
 		// calculate a damage area
-		//DamageSectorData sector = ;
 		// invoke GameEvents::Instance().OnPlayerSlap with damage area
 		GameEvents::Instance().OnPlayerSlap.Invoke(GetDamageSectorArea());
 		break;

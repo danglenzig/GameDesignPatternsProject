@@ -1,6 +1,5 @@
 #pragma once
 #include "raylib.h"
-//#include "../EventSystem/Event.h"
 #include "../EventSystem/GameEvents.h"
 
 struct DrawData
