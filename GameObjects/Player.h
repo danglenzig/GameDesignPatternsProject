@@ -9,6 +9,7 @@
 #include <unordered_map>
 #include "../EventSystem/GameEvents.h"
 #include "../Animation/PlayerAnimator.h"
+#include <algorithm>
 
 enum EnumPlayerState {
 	IDLE_STATE,
@@ -130,6 +131,10 @@ void Player::WalkingUpdateBehavior(const float& dT, const Vector2& moveInput)
 	}
 	InputHandler::Instance().GetAttackInput();
 	Vector2 newPos = position + (moveInput * speed * dT);
+
+	newPos.x = std::clamp(newPos.x, 20.0f, 1260.0f);
+	newPos.y = std::clamp(newPos.y, 20.0f, 700.0f);
+
 	position = newPos;
 
 	FixDrawData();
