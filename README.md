@@ -35,11 +35,6 @@ This project is my implementation of that assignment, with an emphasis on clean 
 - **Objective**
   - Survive as long as possible against an endless, escalating swarm of angry killer bees
 
-# Raylib & C++ Learning Context
-This is my first project using `raylib`, and it was also my first substantial C++ assignment. A secondary goal for this project was simply getting comfortable with C++ syntax, build tooling, and memory/ownership rules while learning a new game library.
-
-Because of that, the codebase is intentionally modest in scope and occasionally naive in its C++ usage: I lean on simple value types, standard containers, and straightforward control flow rather than more advanced language features or heavy template metaprogramming. The focus was on building clear, reasonably well-structured gameplay code and exercising the targeted design patterns, not on writing production-grade engine code. I also de-emphasized many aesthetic, amd "pure" game design concerns, like balancing, UI, replayability, and (well...let's be honest) fun, in order to concentrate on the core learning objectives and C++ fundamentals. As my C++ experience grows, I would expect to refine some of these choices (for example, tightening const-correctness, improving lifetime management, and adding more robust error handling), but this version represents a solid snapshot of my current level.
-
 # Design Patterns Employed
 ## Finite State Machine (FSM) Pattern
 FSM is implemented in `StateMachine.h` (`FSM`, `FSM_State`, and `FSM_Events` classes). The `Player` owns an `FSM` instance that manages named states (`IDLE`, `WALKING`, `ATTACKING`, `REACTING`) and allowed transitions. The FSM also emits state enter/exit events, which trigger various behaviors and animations.
@@ -81,5 +76,8 @@ Instead of every enemy instance owning its own copy of the same textures, they a
 # Reflections & Conclusion
 Overall, the patterns in this project are aimed at keeping the main loop thin and pushing behavior into focused, well-named units. Singletons and the event system give me simple, globally accessible services while still keeping gameplay code reasonably decoupled. The factory + object pool combination lets the enemy swarm scale up without turning into a performance problem, and the FSM + animation components make the player’s behavior easy to reason about and extend.
 
-If I were to take the project further, I would likely replace some singletons with dependency-injected services, move more configuration into data, and explore a more formal component system. For the purposes of this assignment, though, the chosen patterns strike a good balance between clarity, flexibility, and implementation effort.
+This is my first project using `raylib`, and it was also my first substantial C++ assignment. A secondary goal for this project was simply getting comfortable with C++ syntax, build tooling, and memory/ownership rules while learning a new game library.
 
+Because of that, the codebase is intentionally modest in scope and occasionally naive in its C++ usage: I lean on simple value types, standard containers, and straightforward control flow rather than more advanced language features or heavy template metaprogramming. The focus was on building clear, reasonably well-structured gameplay code and exercising the targeted design patterns, not on writing production-grade engine code. I also de-emphasized many aesthetic, amd "pure" game design concerns, like balancing, UI, replayability, and (well...let's be honest) fun, in order to concentrate on the core learning objectives and C++ fundamentals. 
+
+Honestly, I struggled with the language more than I expected to. I would often spend hours troubleshooting game-breaking bugs in simple features -- things like memory management, string handling, pointer discipline, etc. This prevented me from being as adventurous with the game design as I would have liked to have been. I hope to become more fluent as we continue to study C++ in different contexts.
