@@ -55,6 +55,12 @@ public:
 
 	}
 
+	void RenderGameEndUI()
+	{
+		DrawText("Thank you for playing. Goodbye.", 10, 320, 40, {128,0,0,255});
+	}
+
+
 	void RenderGameObject(GameObject* ptrToGameObject)
 	{
 		if (!ptrToGameObject) return;
@@ -81,5 +87,7 @@ public:
 			);
 		}
 	}
+
+	
 
 };

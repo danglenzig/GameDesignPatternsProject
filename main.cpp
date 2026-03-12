@@ -49,19 +49,24 @@ int main()
 			secondsPlayed += 1;
 		}
 		
+		if (playerStatus.GetPlayerHealth() > 0) {
+			// draw
+			ClearBackground({ 85, 107,47,255 }); // olive green		
 
-		// draw
-		ClearBackground({ 85, 107,47,255 }); // olive green
-		//renderSystem.RenderBackground();
+			// tell the renderSystem to render the player
+			renderSystem.RenderGameObject(&player);
+			// 
+			// tell the enemy system to render the enemies & hit markers
+			enemyFactory.RenderEnemies();
+			enemyFactory.RenderHitMarkers();
+			renderSystem.UpdateHud(secondsPlayed);
+		}
+		else {
+			ClearBackground({ 85, 107,47,255 }); // olive green	
+			renderSystem.RenderGameEndUI();
+		}
+
 		
-
-		// tell the renderSystem to render the player
-		renderSystem.RenderGameObject(&player);
-		// 
-		// tell the enemy system to render the enemies & hit markers
-		enemyFactory.RenderEnemies();
-		enemyFactory.RenderHitMarkers();
-		renderSystem.UpdateHud(secondsPlayed);
 
 		EndDrawing();
 	}
