@@ -4,6 +4,8 @@
 #include "PlayerStatus.h"
 #include <string>
 #include <iostream>
+#include <algorithm>
+#include <iomanip>
 
 
 
@@ -28,16 +30,19 @@ public:
 	void UpdateHud(const size_t secondsPlayed)
 	{
 		DrawText("WASD to move...", 10, 10, 30, BLACK);
+		DrawText("Left-click to slap...", 10, 40, 30, BLACK);
+
+
 		int playerHealth = PlayerStatus::Instance().GetPlayerHealth();
 		std::string phStr = "Player Health: " + std::to_string(playerHealth);
-		DrawText(phStr.c_str(), 10, 50, 30, BLACK);
+		DrawText(phStr.c_str(), 10, 90, 30, BLACK);
 
 		std::string secondsPlayedStr = "Seconds Played: " + std::to_string(secondsPlayed);
-		DrawText(secondsPlayedStr.c_str(), 10, 90, 30, BLACK);
+		DrawText(secondsPlayedStr.c_str(), 10, 130, 30, BLACK);
 
 		size_t beesSlapped = PlayerStatus::Instance().GetBugsSlapped();
 		std::string bugsSlappedStr = "Bees Slapped: " + std::to_string(beesSlapped);
-		DrawText(bugsSlappedStr.c_str(), 10, 130, 30, BLACK);
+		DrawText(bugsSlappedStr.c_str(), 10, 170, 30, BLACK);
 	}
 
 	void RenderBackground()
@@ -57,6 +62,7 @@ public:
 
 	void RenderGameEndUI()
 	{
+		
 		DrawText("Thank you for playing. Goodbye.", 10, 320, 40, {128,0,0,255});
 	}
 

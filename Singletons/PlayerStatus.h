@@ -17,6 +17,7 @@ private:
 
 	int playerHealth = -1;
 	size_t bugsSlapped = 0;
+	size_t seconds_played = 0;
 
 
 public:
@@ -60,6 +61,9 @@ public:
 	void IncreasePlayerHealth(const int& increaseAmount) { playerHealth += increaseAmount; }
 
 	float GetHitRadius() const { return hitRadius; }
+
+	void SetSecondsPlayed(size_t value) { seconds_played = value; }
+	size_t GetSecondsPlayed() { return seconds_played; }
 
 
 };

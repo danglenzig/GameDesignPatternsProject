@@ -47,6 +47,7 @@ int main()
 		if (ta >= 1.0f) {
 			ta = 0.0f;
 			secondsPlayed += 1;
+			PlayerStatus::Instance().SetSecondsPlayed(secondsPlayed);
 		}
 		
 		if (playerStatus.GetPlayerHealth() > 0) {

@@ -15,8 +15,8 @@ private:
 	const int minSkewAdjust = -500;
 	const int maxSkewAdjust = 1500;
 
-	const size_t poolBatchSize = 500;
-	float spawnInterval = 1.0f;
+	const size_t poolBatchSize = 1500;
+	float spawnInterval = 2.0f;
 	float spawnTimer = 0.0f;
 	FlyweightAnimator animator;
 	bool beSpawning = true;
