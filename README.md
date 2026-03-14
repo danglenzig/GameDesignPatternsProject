@@ -63,6 +63,8 @@ Client code does not construct `Enemy` objects directly; instead it relies on `E
 
 When an enemy dies, it raises `OnEnemyDied`, which `EnemyFactory` handles by calling `Recycle()` on the matching `Enemy` and marking it inactive so it can be reused later. This pattern is a natural fit for a swarm game where enemies are constantly being created and destroyed, because it avoids frequent heap allocations and keeps performance more predictable as the swarm grows.
 
+The `Recycle()` mechanism serves a dual purpose: in addition to all the benefits inherent to the pool pattern, it also scales up the game difficulty with gameplay time. The `EnemyFactory` spawns new enemies at a fixed rate (currently tuned to one enemy every 2 seconds). When bees "die" (either by kamizaze or player attack) those enemies automatically appear as new enemies in addition to those being spawned at a constant rate.
+
 ## Composition
 While this project does not use a full entity–component system, it does lean on simple components via composition. The `Player` is a `GameObject` that owns an `FSM` for behavior/state transitions and a `PlayerAnimator` for visuals. The FSM decides *what* the player is doing (IDLE, WALKING, ATTACKING, REACTING), while the animator decides *how it looks* (which sprite sequence to play and when to loop or finish).
 
